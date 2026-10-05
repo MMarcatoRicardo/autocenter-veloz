@@ -14,6 +14,11 @@
 
   var MECANICOS = ['Carlos', 'Diego', 'Fábio', 'Jonas', 'Marcos', 'Rafael'];
   var ELEVADORES = 5;
+  var OFICINA = {
+    whatsapp: '554130000000',
+    endereco: 'Rua Fictícia, 100 · Curitiba/PR',
+    google: 'https://www.google.com/search?q=Auto+Center+Veloz+avalia%C3%A7%C3%B5es'
+  };
 
   function minutesAgo(m) { return Date.now() - m * 60000; }
 
@@ -37,6 +42,33 @@
     return {
       version: 1,
       orders: [
+        {
+          id: 'OS-1039', placa: 'FRT1A22', modelo: 'Hyundai HB20 1.0 2020', cliente: 'Lucas Ferreira',
+          telefone: '41999990006', elevador: null, mecanico: 'Rafael', step: 6,
+          entrada: minutesAgo(1500), stepSince: minutesAgo(1100), previsao: 'Entregue',
+          itens: [
+            { id: 'i1', desc: 'Troca do kit de embreagem', valor: 1450, status: 'aprovado', obs: 'Disco no limite de desgaste.', foto: null }
+          ],
+          timeline: [
+            { t: minutesAgo(1500), msg: 'Veículo recebido pela recepção' },
+            { t: minutesAgo(1380), msg: 'Cliente aprovou 1 item(ns) pelo app' },
+            { t: minutesAgo(1100), msg: 'Veículo entregue ao cliente' }
+          ],
+          avaliacao: { nota: 5, comentario: 'Aprovei pelo celular no meio de uma reunião. Muito prático!', t: minutesAgo(1080) }
+        },
+        {
+          id: 'OS-1040', placa: 'GHI5B67', modelo: 'Renault Sandero 1.6 2017', cliente: 'Camila Rocha',
+          telefone: '41999990007', elevador: null, mecanico: 'Marcos', step: 6,
+          entrada: minutesAgo(1400), stepSince: minutesAgo(980), previsao: 'Entregue',
+          itens: [
+            { id: 'i1', desc: 'Revisão 60.000 km', valor: 760, status: 'aprovado', obs: '', foto: null }
+          ],
+          timeline: [
+            { t: minutesAgo(1400), msg: 'Veículo recebido pela recepção' },
+            { t: minutesAgo(980), msg: 'Veículo entregue ao cliente' }
+          ],
+          avaliacao: { nota: 4, comentario: 'Gostei de ver as fotos das peças antes de aprovar.', t: minutesAgo(970) }
+        },
         {
           id: 'OS-1042', placa: 'BRA2E19', modelo: 'VW Gol 1.0 2019', cliente: 'Mariana Souza',
           telefone: '41999990001', elevador: 1, mecanico: 'Carlos', step: 2,
@@ -115,5 +147,5 @@
     };
   }
 
-  window.VELOZ_DATA = { STEPS: STEPS, MECANICOS: MECANICOS, ELEVADORES: ELEVADORES, seed: seed };
+  window.VELOZ_DATA = { STEPS: STEPS, MECANICOS: MECANICOS, ELEVADORES: ELEVADORES, OFICINA: OFICINA, seed: seed };
 })();

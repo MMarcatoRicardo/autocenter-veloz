@@ -1,0 +1,20 @@
+{
+  "name": "Veloz Acompanha · Auto Center Veloz",
+  "short_name": "Veloz",
+  "description": "Acompanhe o conserto e aprove o orçamento da Auto Center Veloz pelo celular.",
+  "lang": "pt-BR",
+  "start_url": "./#/cliente",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Recepção", "url": "./#/recepcao" },
+    { "name": "Mecânico", "url": "./#/mecanico" }
+  ]
+}
