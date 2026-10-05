@@ -2,7 +2,7 @@
 
 > Web app para o cliente da oficina **acompanhar o conserto e aprovar o orçamento pelo celular**, com fotos das peças, enquanto mecânicos e recepção atualizam tudo em um só lugar.
 
-**Demo online:** https://SEU-USUARIO.github.io/autocenter-veloz/
+**Demo online:** https://mmarcatoricardo.github.io/autocenter-veloz/
 
 Atividade avaliativa (Estudo de Caso 3) da disciplina **Design Profissional: Produção de Portfólio & Desenvolvimento Empresarial**, com o Prof. Sedenilso Antonio Machado.
 Autor: **Ricardo Medeiros**.
@@ -106,7 +106,7 @@ sequenceDiagram
 
 ## 4. Protótipo e telas
 
-O protótipo é **navegável e funcional**: acesse a [demo online](https://SEU-USUARIO.github.io/autocenter-veloz/).
+O protótipo é **navegável e funcional**: acesse a [demo online](https://mmarcatoricardo.github.io/autocenter-veloz/).
 
 > Dica: abra a tela do **mecânico** e a do **cliente** em duas abas. Quando o cliente aprova, a outra aba atualiza sozinha.
 
@@ -169,12 +169,12 @@ autocenter-veloz/
 
 ## 6. Como executar
 
-**Online:** acesse https://SEU-USUARIO.github.io/autocenter-veloz/
+**Online:** acesse https://mmarcatoricardo.github.io/autocenter-veloz/
 
 **Localmente** (não precisa instalar dependências):
 
 ```bash
-git clone https://github.com/SEU-USUARIO/autocenter-veloz.git
+git clone https://github.com/MMarcatoRicardo/autocenter-veloz.git
 cd autocenter-veloz
 
 # opção 1: abrir direto no navegador
