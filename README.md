@@ -52,6 +52,7 @@ Avaliei as três opções da atividade:
 | Cliente precisa instalar algo? | Sim, e ninguém instala app de oficina para usar 2 vezes por ano | Não | **Não: abre por um link no WhatsApp** |
 | Resolve status e aprovação? | Sim | Não, só apresenta a empresa | **Sim** |
 | Mecânico usa no celular, com câmera? | Sim | Não | **Sim (`<input capture>`)** |
+| Fica na tela inicial do celular? | Sim | Não | **Sim (PWA instalável e offline)** |
 | Recepção tem painel de gestão? | Exigiria outro sistema | Não | **Sim, no mesmo produto** |
 | Custo e prazo para a oficina | Alto (lojas, duas plataformas) | Baixo | **Baixo (hospedagem estática)** |
 
@@ -71,22 +72,36 @@ Avaliei as três opções da atividade:
 O **Veloz Acompanha** tem três perfis, todos no mesmo web app:
 
 ### Cliente
-- Encontra o carro pela **placa ou nº da OS**, ou abre direto pelo **link recebido no WhatsApp**.
+- Encontra o carro pela **placa ou nº da OS**, pelo **QR code do comprovante** ou pelo **link recebido no WhatsApp**.
 - Vê a **etapa atual**, a previsão de entrega e o mecânico responsável.
-- Vê a **foto e a explicação** de cada peça com defeito e **aprova ou recusa item a item**.
+- Vê a **foto e a explicação** de cada peça com defeito e **aprova ou recusa item a item** (ou "Aprovar todos").
 - Quando responde todos os itens, o serviço é **liberado automaticamente** para o mecânico, sem passar pela recepção.
+- Pode ativar **notificações do navegador** para ser avisado a cada mudança de etapa.
+- Tem um **relatório digital** da OS, com itens, evidências fotográficas e histórico, que pode **salvar em PDF**. É o mesmo diferencial das concessionárias, sem o preço delas.
+- Na entrega, **avalia o atendimento** com estrelas. Nota 4 ou 5 vira convite para avaliar no Google; nota baixa avisa o gerente para resolver antes de virar avaliação negativa pública.
+- Botão **"Falar com a oficina"** abre o WhatsApp com a OS já identificada.
 
 ### Mecânico
 - Vê só as **suas OS**, com o elevador de cada uma.
 - **Avança a etapa** com um toque, e o cliente é atualizado na hora.
 - Em "Encontrei um problema", **fotografa a peça pelo celular**, informa valor e explicação, e envia para aprovação.
 - O botão de avançar fica travado enquanto há itens aguardando o cliente, o que evita trabalho não autorizado.
+- Recebe aviso quando o cliente responde, sem a recepção precisar interromper.
 
 ### Recepção e gestão (Eduardo e Henrique)
-- **Indicadores:** carros na oficina, aguardando aprovação, tempo médio de espera e prontos para retirada.
+- **Indicadores:** carros na oficina, aguardando aprovação, tempo médio de espera, prontos para retirada e **nota média dos clientes**.
 - **Mapa dos 5 elevadores:** livre ou ocupado, com alerta quando o carro está parado.
-- **Lista de OS** ordenada por urgência, com **copiar link** e **enviar pelo WhatsApp** (mensagem pronta).
-- **Nova OS:** cadastro na entrada do veículo, que já gera o link do cliente.
+- **Lista de OS** ordenada por urgência, com **busca** (placa, cliente, OS ou mecânico) e **filtro por etapa**.
+- Por OS: **comprovante com QR code**, **copiar link** e **enviar pelo WhatsApp** (mensagem pronta).
+- **Nova OS:** cadastro na entrada do veículo, que já abre o comprovante com QR, substituindo o orçamento em papel.
+- **Últimas avaliações** dos clientes.
+
+### Desenvolvedor
+- Aba **Desenvolvedor**, com o criador do app: foto, bio, links (GitHub, LinkedIn e Instagram) e repositórios, carregados **ao vivo da API pública do GitHub** (com dados de reserva se a API estiver fora).
+
+### App instalável (PWA)
+- Pode ser **instalado na tela inicial** do celular ou do computador, com ícone próprio, e **abre offline** (service worker).
+- **Tema claro e escuro**: segue o sistema e pode ser alternado no botão ◐.
 
 ### Fluxo principal
 
@@ -108,19 +123,27 @@ sequenceDiagram
 
 O protótipo é **navegável e funcional**: acesse a [demo online](https://mmarcatoricardo.github.io/autocenter-veloz/).
 
-> Dica: abra a tela do **mecânico** e a do **cliente** em duas abas. Quando o cliente aprova, a outra aba atualiza sozinha.
+> Dica: abra a tela do **mecânico** e a do **cliente** em duas abas. Quando o cliente aprova, a outra aba atualiza sozinha e mostra o aviso.
 
-| Cliente (celular): status e aprovação | Cliente (celular): busca |
-|---|---|
-| ![Tela do cliente com status e aprovação de itens](docs/screenshots/cliente-mobile.png) | ![Tela de busca por placa](docs/screenshots/cliente-busca.png) |
+| Cliente: status e aprovação | Cliente: avaliação na entrega | Criador do app |
+|---|---|---|
+| ![Tela do cliente com status e aprovação de itens](docs/screenshots/cliente-mobile.png) | ![Tela do cliente com avaliação por estrelas](docs/screenshots/cliente-avaliacao.png) | ![Aba do desenvolvedor no celular](docs/screenshots/desenvolvedor-mobile.png) |
 
-**Recepção: painel do pátio**
+**Recepção: painel do pátio, com busca, filtros e avaliações**
 
 ![Painel da recepção com indicadores, elevadores e ordens de serviço](docs/screenshots/recepcao.png)
+
+**Relatório digital da OS (salvável em PDF)**
+
+![Relatório digital com itens, evidências fotográficas e histórico](docs/screenshots/relatorio.png)
 
 **Mecânico: minhas OS**
 
 ![Painel do mecânico com etapas e itens do orçamento](docs/screenshots/mecanico.png)
+
+**Desenvolvedor**
+
+![Aba do desenvolvedor com perfil e repositórios do GitHub](docs/screenshots/desenvolvedor.png)
 
 **Página inicial**
 
@@ -128,17 +151,21 @@ O protótipo é **navegável e funcional**: acesse a [demo online](https://mmarc
 
 ## 5. Arquitetura
 
-Protótipo **100% front-end e estático**, sem build e sem dependências externas, pronto para o GitHub Pages.
+Protótipo **100% front-end e estático**, sem build, pronto para o GitHub Pages. A única biblioteca externa é o gerador de QR code ([qrcodejs](https://github.com/davidshimjs/qrcodejs), via cdnjs); sem ela, o app continua funcionando e mostra só o link.
 
 ```
 autocenter-veloz/
-├── index.html            # Estrutura da página (topo, área do app, rodapé)
+├── index.html             # Estrutura da página (topo, área do app, rodapé)
+├── manifest.webmanifest   # PWA: nome, ícones, cores e atalhos
+├── sw.js                  # Service worker: cache do app para abrir offline
+├── assets/                # Ícones do app (SVG e PNG, incluindo maskable)
 ├── css/
-│   └── styles.css        # Design system: tokens de cor, componentes, responsivo, tema escuro
+│   └── styles.css         # Design system: tokens de cor, componentes, responsivo, temas, impressão
 ├── js/
-│   ├── data.js           # Etapas do serviço, mecânicos, elevadores e dados de exemplo
-│   └── app.js            # SPA: roteamento por hash, telas, ações e persistência
-├── docs/screenshots/     # Capturas usadas neste README
+│   ├── data.js            # Etapas do serviço, mecânicos, elevadores, oficina e dados de exemplo
+│   ├── dev.js             # Aba Desenvolvedor: perfil e repositórios via API pública do GitHub
+│   └── app.js             # SPA: rotas, telas, ações, notificações e persistência
+├── docs/screenshots/      # Capturas usadas neste README
 ├── .gitignore
 ├── LICENSE
 └── README.md
@@ -147,8 +174,11 @@ autocenter-veloz/
 | Camada | Decisão |
 |---|---|
 | Interface | HTML5 semântico + CSS3 (Grid, Flexbox, custom properties), sem framework |
-| Lógica | JavaScript puro (ES5+), em uma *single page application* com rotas `#/cliente`, `#/cliente/OS-1042`, `#/mecanico` e `#/recepcao` |
-| Estado | Objeto `orders` persistido no `localStorage`. O evento `storage` sincroniza abas abertas em tempo real |
+| Lógica | JavaScript puro (ES5+), em uma *single page application* com rotas `#/cliente`, `#/cliente/OS-1042`, `#/relatorio/OS-1042`, `#/mecanico`, `#/recepcao` e `#/desenvolvedor` |
+| Estado | Objeto `orders` persistido no `localStorage`. O evento `storage` sincroniza abas abertas em tempo real e gera os avisos (toast e Notification API) |
+| PWA | `manifest.webmanifest` + service worker com estratégia *network-first*: sempre a versão mais nova online e o cache quando offline |
+| Relatório | Página própria com CSS `@media print`, então o "Salvar PDF" do navegador gera um documento limpo |
+| Perfil do autor | `fetch` na API pública do GitHub (sem token), com dados de reserva embutidos |
 | Fotos | Capturadas pela câmera (`capture="environment"`), redimensionadas no `<canvas>` para 640 px em JPEG antes de salvar |
 | Segurança | Todo texto digitado é escapado antes de ir para o HTML (proteção contra XSS) |
 | Hospedagem | GitHub Pages (estático, HTTPS, gratuito) |
@@ -187,12 +217,14 @@ python -m http.server 8080
 
 **Roteiro de teste (2 minutos):**
 
-1. Em **Recepção**, veja os 2 carros parados aguardando aprovação.
-2. Abra **Cliente** e escolha `BRA-2E19`. Veja as fotos e aprove as pastilhas de freio e recuse a palheta.
-3. Veja que a OS passou sozinha para **Em serviço**.
+1. Em **Recepção**, veja os 2 carros parados aguardando aprovação e a nota média dos clientes.
+2. Abra **Cliente** e escolha `BRA-2E19`. Veja as fotos, aprove as pastilhas de freio e recuse a palheta.
+3. Veja que a OS passou sozinha para **Em serviço**. Abra o **Relatório digital** e use "Salvar PDF".
 4. Em **Mecânico** (Carlos), avance as etapas até **Pronto para retirada**.
-5. Volte à **Recepção** e clique em **Entregar**. Use **+ Nova OS** para cadastrar um carro novo.
-6. Para recomeçar, use **Restaurar dados de exemplo** no rodapé.
+5. Volte à **Recepção**, busque `BRA` e clique em **Entregar**. Na tela do cliente, avalie com estrelas.
+6. Use **+ Nova OS** para cadastrar um carro novo e veja o comprovante com QR code.
+7. Abra a aba **Desenvolvedor** para conhecer o criador do app.
+8. Para recomeçar, use **Restaurar dados de exemplo** no rodapé.
 
 ## 7. Segurança e credenciais
 
@@ -205,7 +237,8 @@ python -m http.server 8080
 
 - Back-end com autenticação da equipe e link do cliente com token de acesso único.
 - Notificação automática pelo WhatsApp Business a cada mudança de etapa.
-- Pagamento por Pix na retirada e avaliação pós-serviço (para melhorar a reputação no Google).
+- Pagamento por Pix na retirada.
+- Push notifications reais (Web Push) mesmo com o app fechado.
 - Relatórios para o Henrique: tempo médio por etapa, taxa de aprovação e faturamento por mecânico.
 
 ## 9. Licença
